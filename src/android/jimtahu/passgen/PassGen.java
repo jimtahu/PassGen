@@ -3,13 +3,14 @@ package android.jimtahu.passgen;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class PassGen extends Activity{
 
     /** handles clicks */
     public void passgen(View v){
-	TextView output = (TextView) this.findViewById(R.id.output);
+	EditText output = (EditText) this.findViewById(R.id.output);
 	output.setText("Fishy!");
     }; 
 
