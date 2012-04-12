@@ -11,7 +11,10 @@ public class PassGen extends Activity{
     /** handles clicks */
     public void passgen(View v){
 	EditText output = (EditText) this.findViewById(R.id.output);
-	output.setText("Fishy!");
+	String txt = "";
+	for(int i=0; i<16; i++)
+	    txt = txt + (int)(Math.random()*10);
+	output.setText(txt);
     }; 
 
     /** Called when the activity is first created. */
