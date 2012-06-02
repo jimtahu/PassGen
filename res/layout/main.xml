@@ -23,5 +23,12 @@
     android:text="@string/genpass"
     android:onClick="passgen"
     />
+<Button
+    android:id="@+id/pulldata"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/pulldata"
+    android:onClick="pulldata"
+    />
 </LinearLayout>
 
