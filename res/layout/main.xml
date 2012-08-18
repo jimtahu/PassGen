@@ -14,7 +14,6 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="10.0.2.2"
-    android:saveEnabled="true"
     />
 <Button
     android:id="@+id/genpass"

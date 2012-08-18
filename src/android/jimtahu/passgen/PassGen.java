@@ -17,11 +17,14 @@ public class PassGen extends Activity{
         String msg = "fish";
         EditText output = (EditText) this.findViewById(R.id.output);
         try{
+   	    Calendar now = Calendar.getInstance();
             Socket datacom = new Socket(output.getText().toString(), 7310);
             Scanner input = new Scanner(datacom.getInputStream());
             OutputStreamWriter host = new OutputStreamWriter(datacom.getOutputStream());
+            Generator.seed(now.get(Calendar.HOUR));
+            host.write(Generator.passcode());
+            host.flush();
             msg = input.nextLine();
-            host.write("fish have landed");
             datacom.close();
         }catch(Exception ex){
             msg = ex.toString();
