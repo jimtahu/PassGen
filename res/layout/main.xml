@@ -13,7 +13,7 @@
     android:id="@+id/output"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:text="passcode"
+    android:text="10.0.2.2"
     android:saveEnabled="true"
     />
 <Button

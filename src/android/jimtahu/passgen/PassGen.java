@@ -1,5 +1,6 @@
 package android.jimtahu.passgen;
 
+import java.util.Calendar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,11 +32,10 @@ public class PassGen extends Activity{
     
     /** handles clicks */
     public void passgen(View v){
+   	Calendar now = Calendar.getInstance();
 	EditText output = (EditText) this.findViewById(R.id.output);
-	String txt = "";
-	for(int i=0; i<16; i++)
-	    txt = txt + (int)(Math.random()*10);
-	output.setText(txt);
+	Generator.seed(now.get(Calendar.HOUR));
+	output.setText(Generator.passcode());
     }; 
 
     /** Called when the activity is first created. */
