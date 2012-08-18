@@ -11,7 +11,7 @@ public class PassGen extends Activity{
     /** handles clicks */
     public void passgen(View v){
 	EditText output = (EditText) this.findViewById(R.id.output);
-	Generator.seed(0x10);
+	Generator.seed((int)(Math.random()*1000));
 	output.setText(Generator.passcode());
     }; 
 
