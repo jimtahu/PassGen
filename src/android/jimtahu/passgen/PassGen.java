@@ -12,33 +12,56 @@ import java.io.OutputStreamWriter;
 
 public class PassGen extends Activity{
 
+	private class CodeExchange extends Thread {
+        private PassGen screen;
+        private String host;
+
+        public CodeExchange(PassGen o, String h){
+            this.screen=o;
+            this.host=h;
+        }//end constructor
+
+        public void run(){
+            String msg = "fish";
+            try{
+   	            Calendar now = Calendar.getInstance();
+                Socket datacom = new Socket(this.host, 7310);
+                Scanner input = new Scanner(datacom.getInputStream());
+                OutputStreamWriter host = new OutputStreamWriter(datacom.getOutputStream());
+                Generator.seed(now.get(Calendar.HOUR));
+                host.write(Generator.passcode());
+                host.flush();
+                msg = input.nextLine();
+                datacom.close();
+            }catch(Exception ex){
+                msg = ex.toString();
+                ex.printStackTrace();
+            }//end try catch
+            this.screen.setOutput(msg);
+            return;
+        }//end run
+
+	}//end CodeExchange
+
+    /** sets the display output */
+    public void setOutput(String text){
+        EditText output = (EditText) this.findViewById(R.id.output);
+        output.setText(text);
+    };
+
     /** connects for a string */
     public void pulldata(View v){
-        String msg = "fish";
         EditText output = (EditText) this.findViewById(R.id.output);
-        try{
-   	    Calendar now = Calendar.getInstance();
-            Socket datacom = new Socket(output.getText().toString(), 7310);
-            Scanner input = new Scanner(datacom.getInputStream());
-            OutputStreamWriter host = new OutputStreamWriter(datacom.getOutputStream());
-            Generator.seed(now.get(Calendar.HOUR));
-            host.write(Generator.passcode());
-            host.flush();
-            msg = input.nextLine();
-            datacom.close();
-        }catch(Exception ex){
-            msg = ex.toString();
-            ex.printStackTrace();
-        }//end try catch
-        output.setText(msg);
+        CodeExchange runner = new CodeExchange(this, output.getText().toString());
+        //runner.start();
+        runner.run();
     };
     
     /** handles clicks */
     public void passgen(View v){
    	Calendar now = Calendar.getInstance();
-	EditText output = (EditText) this.findViewById(R.id.output);
 	Generator.seed(now.get(Calendar.HOUR));
-	output.setText(Generator.passcode());
+	setOutput(Generator.passcode());
     }; 
 
     /** Called when the activity is first created. */
