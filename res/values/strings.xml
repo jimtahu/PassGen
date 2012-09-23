@@ -3,4 +3,5 @@
     <string name="app_name">PassGen</string>
     <string name="greeting">Wellcome to the passcode generator.</string>
     <string name="genpass">Generate Passcode</string>
+    <string name="pulldata">Connect for data</string>
 </resources>
