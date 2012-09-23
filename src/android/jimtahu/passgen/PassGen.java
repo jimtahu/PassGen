@@ -3,6 +3,7 @@ package android.jimtahu.passgen;
 import java.util.Calendar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,16 +13,23 @@ import java.io.OutputStreamWriter;
 
 public class PassGen extends Activity{
 
-	private class CodeExchange extends Thread {
+    /** 'Thread' for doing actual code exchange */
+	private class CodeExchange extends AsyncTask {
         private PassGen screen;
         private String host;
+        private String result;
 
+        /**
+         * @param o Main app
+         * @param h Host name of server
+         */
         public CodeExchange(PassGen o, String h){
             this.screen=o;
             this.host=h;
         }//end constructor
 
-        public void run(){
+        /** equivlant to run */
+        public String doInBackground(Object ...o){
             String msg = "fish";
             try{
    	            Calendar now = Calendar.getInstance();
@@ -37,9 +45,14 @@ public class PassGen extends Activity{
                 msg = ex.toString();
                 ex.printStackTrace();
             }//end try catch
-            this.screen.setOutput(msg);
-            return;
+            this.result=msg;
+            return msg;
         }//end run
+
+        /**runs in the main thread after doInBackground compleates */
+        protected void onPostExecute(String msg){
+            this.screen.setOutput(this.result);
+        }//end onPostExecute
 
 	}//end CodeExchange
 
@@ -52,9 +65,7 @@ public class PassGen extends Activity{
     /** connects for a string */
     public void pulldata(View v){
         EditText output = (EditText) this.findViewById(R.id.output);
-        CodeExchange runner = new CodeExchange(this, output.getText().toString());
-        //runner.start();
-        runner.run();
+        new CodeExchange(this, output.getText().toString()).execute();
     };
     
     /** handles clicks */
