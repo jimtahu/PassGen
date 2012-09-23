@@ -10,6 +10,8 @@ import android.widget.TextView;
 import java.net.Socket;
 import java.util.Scanner;
 import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
 public class PassGen extends Activity{
 
@@ -41,7 +43,9 @@ public class PassGen extends Activity{
                 host.flush();
                 msg = input.nextLine();
                 datacom.close();
-            }catch(Exception ex){
+            }catch(UnknownHostException ex){
+                msg = ex.toString();
+            }catch(IOException ex){
                 msg = ex.toString();
                 ex.printStackTrace();
             }//end try catch
@@ -64,8 +68,8 @@ public class PassGen extends Activity{
 
     /** connects for a string */
     public void pulldata(View v){
-        EditText output = (EditText) this.findViewById(R.id.output);
-        new CodeExchange(this, output.getText().toString()).execute();
+        EditText host = (EditText) this.findViewById(R.id.host);
+        new CodeExchange(this, host.getText().toString()).execute();
     };
     
     /** handles clicks */

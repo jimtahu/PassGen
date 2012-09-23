@@ -10,10 +10,16 @@
     android:text="@string/greeting"
     />
 <EditText
-    android:id="@+id/output"
+    android:id="@+id/host"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="10.0.2.2"
+    />
+<EditText
+    android:id="@+id/output"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="fish"
     />
 <Button
     android:id="@+id/genpass"
