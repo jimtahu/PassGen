@@ -27,7 +27,7 @@ public class passerve extends Thread {
                 OutputStreamWriter output = new OutputStreamWriter(datacom.getOutputStream());
                 output.write("Authcode:");
                 output.flush();
-                Generator.seed(now.get(Calendar.HOUR));
+                Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE)*now.get(Calendar.SECOND));
                 String real = Generator.passcode();
                 System.err.println("Real "+real);
                 String test = input.next();

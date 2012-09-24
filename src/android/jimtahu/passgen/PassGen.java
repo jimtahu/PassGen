@@ -38,7 +38,7 @@ public class PassGen extends Activity{
                 Socket datacom = new Socket(this.host, 7310);
                 Scanner input = new Scanner(datacom.getInputStream());
                 OutputStreamWriter host = new OutputStreamWriter(datacom.getOutputStream());
-                Generator.seed(now.get(Calendar.HOUR));
+                Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE)*now.get(Calendar.SECOND));
                 host.write(Generator.passcode());
                 host.flush();
                 msg = input.nextLine();
@@ -74,9 +74,9 @@ public class PassGen extends Activity{
     
     /** handles clicks */
     public void passgen(View v){
-   	Calendar now = Calendar.getInstance();
-	Generator.seed(now.get(Calendar.HOUR));
-	setOutput(Generator.passcode());
+       	Calendar now = Calendar.getInstance();
+    	Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE)*now.get(Calendar.SECOND));
+    	setOutput(Generator.passcode());
     }; 
 
     /** Called when the activity is first created. */
