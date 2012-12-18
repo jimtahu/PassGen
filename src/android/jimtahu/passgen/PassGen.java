@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import java.net.Socket;
 import java.util.Scanner;
 import java.io.OutputStreamWriter;
@@ -38,7 +37,7 @@ public class PassGen extends Activity{
                 Socket datacom = new Socket(this.host, 7310);
                 Scanner input = new Scanner(datacom.getInputStream());
                 OutputStreamWriter host = new OutputStreamWriter(datacom.getOutputStream());
-                Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE)*now.get(Calendar.SECOND));
+                Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE));
                 host.write(Generator.passcode());
                 host.flush();
                 msg = input.nextLine();
@@ -75,7 +74,7 @@ public class PassGen extends Activity{
     /** handles clicks */
     public void passgen(View v){
        	Calendar now = Calendar.getInstance();
-    	Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE)*now.get(Calendar.SECOND));
+    	Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE));
     	setOutput(Generator.passcode());
     }; 
 
