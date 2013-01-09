@@ -4,8 +4,11 @@
       android:installLocation="preferExternal"
       android:versionCode="1"
       android:versionName="0.7">
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="10"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <application android:label="@string/app_name"
-		 android:icon="@drawable/icon">
+		 android:icon="@drawable/icon"
+		 android:allowBackup = "false">
         <activity android:name="PassGen"
                   android:label="@string/app_name">
             <intent-filter>
@@ -13,6 +16,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
-    <uses-permission android:name="android.permission.INTERNET" /> 
+    </application> 
 </manifest> 
