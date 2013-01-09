@@ -15,7 +15,7 @@ import java.net.UnknownHostException;
 public class PassGen extends Activity{
 
     /** 'Thread' for doing actual code exchange */
-	private class CodeExchange extends AsyncTask {
+	private class CodeExchange extends AsyncTask<String, String, String> {
         private PassGen screen;
         private String host;
         private String result;
@@ -30,7 +30,8 @@ public class PassGen extends Activity{
         }//end constructor
 
         /** equivlant to run */
-        public String doInBackground(Object ...o){
+        @Override
+        public String doInBackground(String ...o){
             String msg = "fish";
             try{
    	            Calendar now = Calendar.getInstance();
@@ -38,9 +39,11 @@ public class PassGen extends Activity{
                 Scanner input = new Scanner(datacom.getInputStream());
                 OutputStreamWriter host = new OutputStreamWriter(datacom.getOutputStream());
                 Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE));
-                host.write(Generator.passcode());
+                host.write(Generator.passcode()+"\n");
                 host.flush();
-                msg = input.nextLine();
+                while(input.hasNext()){
+                	msg = input.next();
+                }
                 datacom.close();
             }catch(UnknownHostException ex){
                 msg = ex.toString();
@@ -56,7 +59,6 @@ public class PassGen extends Activity{
         protected void onPostExecute(String msg){
             this.screen.setOutput(this.result);
         }//end onPostExecute
-
 	}//end CodeExchange
 
     /** sets the display output */
