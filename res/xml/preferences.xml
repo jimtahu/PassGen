@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceCategory 
+        android:title="Host Settings"
+        android:key="host_category">
+        
+<EditTextPreference
+            android:key="host_name"
+            android:title="Host Name" 
+            android:summary="Define the hostname/IP we will connect to"
+            android:dialogTitle="Host Name"
+            android:dialogMessage="Name or IP Address"    
+            android:defaultValue="10.0.2.2"/>
+
+</PreferenceCategory>
+</PreferenceScreen>

@@ -2,10 +2,16 @@ package android.jimtahu.passgen;
 
 import java.util.Calendar;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
 import java.net.Socket;
 import java.util.Scanner;
 import java.io.OutputStreamWriter;
@@ -80,11 +86,38 @@ public class PassGen extends Activity{
     	setOutput(Generator.passcode());
     }; 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+    	menu.add(Menu.NONE,0,0,"Settings");
+    	return super.onCreateOptionsMenu(menu);
+    };
+    
+    public boolean onOptionsItemSelected(MenuItem item){
+    	switch (item.getItemId()) {
+		case 0:
+			startActivity(new Intent(this,SettingScreen.class));
+			//Toast msg = Toast.makeText(this,"GoldFish",Toast.LENGTH_LONG);
+			//msg.show();
+			return true;
+		}
+    	return false;
+    };
+
+    @Override
+    protected void onResume() {
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    	EditText host = (EditText) this.findViewById(R.id.host);
+        host.setText(prefs.getString("host_name","localhost"));
+        super.onResume();
+    }//end onResume
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState){
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        EditText host = (EditText) this.findViewById(R.id.host);
+        host.setText(prefs.getString("host_name","localhost"));
     }//end onCreate
 }//end PassGen
