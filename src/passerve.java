@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.util.Scanner;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
 
@@ -38,6 +36,24 @@ public class passerve extends Thread {
     }//end run_unlock
     
     /**
+     * locks the computer (also setup for gnome3 atm)
+     */
+    private void run_lock(){	
+    	try {
+    		ProcessBuilder locker = new ProcessBuilder("/usr/bin/gnome-screensaver-command","-l");
+        	locker.environment().put("DISPLAY", ":0.0");
+			Process screen_run = locker.start();
+			screen_run.waitFor();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			System.err.println("Interupted while waiting for lock to compleate.");
+			e.printStackTrace();
+		}
+    }//end run_unlock
+    
+    /**
      * Handles auth request
      */
     public void run(){
@@ -59,6 +75,7 @@ public class passerve extends Thread {
                 }else{
                     System.err.println("Failed\n");
                     output.write("Failed\n");
+                    run_lock();
                 }
                 output.flush();
                 datacom.close();

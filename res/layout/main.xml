@@ -29,11 +29,18 @@
     android:onClick="passgen"
     />
 <Button
-    android:id="@+id/pulldata"
+    android:id="@+id/unlock"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/pulldata"
-    android:onClick="pulldata"
+    android:text="@string/unlock"
+    android:onClick="unlock"
+    />
+<Button 
+    android:id="@+id/lockbutton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/lock"
+    android:onClick="lock"
     />
 </LinearLayout>
 

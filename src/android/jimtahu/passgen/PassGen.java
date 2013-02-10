@@ -21,7 +21,7 @@ import java.net.UnknownHostException;
 public class PassGen extends Activity{
 
     /** 'Thread' for doing actual code exchange */
-	private class CodeExchange extends AsyncTask<String, String, String> {
+	private class CodeExchange extends AsyncTask<Integer, String, String> {
         private PassGen screen;
         private String host;
         private String result;
@@ -37,7 +37,7 @@ public class PassGen extends Activity{
 
         /** equivlant to run */
         @Override
-        public String doInBackground(String ...o){
+        public String doInBackground(Integer ... opt){
             String msg = "fish";
             try{
    	            Calendar now = Calendar.getInstance();
@@ -45,7 +45,10 @@ public class PassGen extends Activity{
                 Scanner input = new Scanner(datacom.getInputStream());
                 OutputStreamWriter host = new OutputStreamWriter(datacom.getOutputStream());
                 Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE));
-                host.write(Generator.passcode()+"\n");
+                if(opt[0]==0)
+                	host.write(Generator.passcode()+"\n");
+                else
+                	host.write("fish\n");
                 host.flush();
                 while(input.hasNext()){
                 	msg = input.next();
@@ -73,10 +76,16 @@ public class PassGen extends Activity{
         output.setText(text);
     };
 
-    /** connects for a string */
-    public void pulldata(View v){
+    /** attempts to unlock */
+    public void unlock(View v){
         EditText host = (EditText) this.findViewById(R.id.host);
-        new CodeExchange(this, host.getText().toString()).execute();
+        new CodeExchange(this, host.getText().toString()).execute(0x00);
+    };
+    
+    /** attempts to unlock */
+    public void lock(View v){
+        EditText host = (EditText) this.findViewById(R.id.host);
+        new CodeExchange(this, host.getText().toString()).execute(0xff);
     };
     
     /** handles clicks */
@@ -92,12 +101,11 @@ public class PassGen extends Activity{
     	return super.onCreateOptionsMenu(menu);
     };
     
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
     	switch (item.getItemId()) {
 		case 0:
 			startActivity(new Intent(this,SettingScreen.class));
-			//Toast msg = Toast.makeText(this,"GoldFish",Toast.LENGTH_LONG);
-			//msg.show();
 			return true;
 		}
     	return false;
@@ -116,8 +124,6 @@ public class PassGen extends Activity{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        EditText host = (EditText) this.findViewById(R.id.host);
-        host.setText(prefs.getString("host_name","localhost"));
+        onResume();
     }//end onCreate
 }//end PassGen

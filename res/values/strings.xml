@@ -3,5 +3,6 @@
     <string name="app_name">PassGen</string>
     <string name="greeting">Wellcome to the passcode generator.</string>
     <string name="genpass">Generate Passcode</string>
-    <string name="pulldata">Connect for data</string>
+    <string name="unlock">Unlock Computer</string>
+    <string name="lock">Lock Computer</string>
 </resources>
