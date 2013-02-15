@@ -19,20 +19,23 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 public class PassGen extends Activity{
+	private long Secret; 
 
     /** 'Thread' for doing actual code exchange */
 	private class CodeExchange extends AsyncTask<Integer, String, String> {
         private PassGen screen;
         private String host;
         private String result;
+        private long secret;
 
         /**
          * @param o Main app
          * @param h Host name of server
          */
-        public CodeExchange(PassGen o, String h){
+        public CodeExchange(PassGen o, String h, long s){
             this.screen=o;
             this.host=h;
+            this.secret=s;
         }//end constructor
 
         /** equivlant to run */
@@ -44,7 +47,7 @@ public class PassGen extends Activity{
                 Socket datacom = new Socket(this.host, 7310);
                 Scanner input = new Scanner(datacom.getInputStream());
                 OutputStreamWriter host = new OutputStreamWriter(datacom.getOutputStream());
-                Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE));
+                Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE)*secret);
                 if(opt[0]==0)
                 	host.write(Generator.passcode()+"\n");
                 else
@@ -79,19 +82,21 @@ public class PassGen extends Activity{
     /** attempts to unlock */
     public void unlock(View v){
         EditText host = (EditText) this.findViewById(R.id.host);
-        new CodeExchange(this, host.getText().toString()).execute(0x00);
+        new CodeExchange(this,
+        		host.getText().toString(),this.Secret)
+        .execute(0x00);
     };
     
     /** attempts to unlock */
     public void lock(View v){
         EditText host = (EditText) this.findViewById(R.id.host);
-        new CodeExchange(this, host.getText().toString()).execute(0xff);
+        new CodeExchange(this, host.getText().toString(),0).execute(0xff);
     };
     
     /** handles clicks */
     public void passgen(View v){
        	Calendar now = Calendar.getInstance();
-    	Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE));
+    	Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE)*now.get(Calendar.SECOND));
     	setOutput(Generator.passcode());
     }; 
 
@@ -116,6 +121,7 @@ public class PassGen extends Activity{
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	EditText host = (EditText) this.findViewById(R.id.host);
         host.setText(prefs.getString("host_name","localhost"));
+        this.Secret = Long.parseLong(prefs.getString("secret","1"));
         super.onResume();
     }//end onResume
     

@@ -11,6 +11,12 @@
             android:dialogTitle="Host Name"
             android:dialogMessage="Name or IP Address"    
             android:defaultValue="10.0.2.2"/>
-
+<EditTextPreference
+            android:key="secret"
+            android:title="Secret" 
+            android:summary="A secret used to authenticate with the server"
+            android:dialogTitle="Secret"
+            android:dialogMessage="Long"    
+            android:defaultValue="1"/>
 </PreferenceCategory>
 </PreferenceScreen>

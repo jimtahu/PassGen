@@ -1,6 +1,7 @@
 import android.jimtahu.passgen.Generator;
 
 import java.util.Calendar;
+import java.util.Random;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.IOException;
 
 public class passerve extends Thread {
+	private static long secret;
     private Socket datacom;
 
     /**
@@ -63,7 +65,7 @@ public class passerve extends Thread {
                 OutputStreamWriter output = new OutputStreamWriter(datacom.getOutputStream());
                 output.write("Authcode:");
                 output.flush();
-                Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE));
+                Generator.seed(now.get(Calendar.HOUR)*now.get(Calendar.MINUTE)*passerve.secret);
                 String real = Generator.passcode();
                 System.err.println("Real "+real);
                 String test = input.next();
@@ -89,7 +91,15 @@ public class passerve extends Thread {
      * Main (server thread)
      */
     public static void main(String args[]) throws Exception{
-        System.err.println("server starting");
+    	if(args.length>0){
+    		passerve.secret = Long.parseLong(args[0]);
+    	}else{
+    		passerve.secret = (new Random()).nextLong();
+    	}
+        System.err.print("The key is ");
+        System.err.println(passerve.secret);
+    	System.err.println("server starting");
+        
         ServerSocket server = new ServerSocket(7310);
         while(true){
             Socket datacom = server.accept();
